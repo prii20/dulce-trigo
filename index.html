@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sistema de Panadería</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Nuestro CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         BARRA SUPERIOR
+    ========================== -->
+
+    <header class="topbar">
+
+        <div class="logo">
+            🥐
+            <span>Dulce Trigo</span>
+        </div>
+        <button class="btn-menu" id="btnMenu">
+            ☰
+        </button>
+
+        <div class="usuario">
+            <span>👤</span>
+            <span>Administrador</span>
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         CONTENEDOR PRINCIPAL
+    ========================== -->
+
+    <div class="layout">
+
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+
+        <aside class="sidebar">
+
+
+            <nav>
+                <a href="#" class="menu-item activo" data-seccion="inicio">
+                    🏠
+                    <span>Inicio</span>
+                </a>
+
+                <a href="#" class="menu-item" data-seccion="productos">
+                    🥐
+                    <span>Productos</span>
+                </a>
+
+                <a href="#" class="menu-item" data-seccion="ventas">
+                    🛒
+                    <span>Ventas</span>
+                </a>
+
+                <a href="#" class="menu-item" data-seccion="clientes">
+                    👥
+                    <span>Clientes</span>
+                </a>
+
+                <a href="#" class="menu-item" data-seccion="stock">
+                    📦
+                    <span>Stock</span>
+                </a>
+
+                <a href="#" class="menu-item" data-seccion="reportes">
+                    📊
+                    <span>Reportes</span>
+                </a>
+            </nav>
+
+        </aside>
+
+
+        <!-- =========================
+             CONTENIDO
+        ========================== -->
+
+        <main class="contenido">
+
+            <div class="bienvenida">
+
+                <h1>Buenos días 👋</h1>
+
+                <p>
+                    Resumen general de tu panadería
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 TARJETAS
+            ========================== -->
+
+            <section class="estadisticas">
+
+                <div class="card-estadistica">
+
+                    <div>
+                        <p>Ventas del día</p>
+                        <h2 id="ventasDia">$0</h2>
+                    </div>
+
+                    <div class="icono">
+                        🛒
+                    </div>
+
+                </div>
+
+
+                <div class="card-estadistica">
+
+                    <div>
+                        <p>Productos</p>
+                        <h2 id="totalProductos">0</h2>
+                    </div>
+
+                    <div class="icono">
+                        🥐
+                    </div>
+
+                </div>
+
+
+                <div class="card-estadistica">
+
+                    <div>
+                        <p>Stock disponible</p>
+                        <h2 id="stockDisponible">0</h2>
+                    </div>
+
+                    <div class="icono">
+                        📦
+                    </div>
+
+                </div>
+
+                <div class="card-estadistica">
+                    <div class="icono">⚠️</div>
+
+                    <div class="tarjeta-info">
+                        <p>Productos con stock bajo</p>
+                        <h3 id="productosStockBajo">0</h3>
+                        <span>Necesitan reposición</span>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 GRÁFICO
+            ========================== -->
+
+            <section class="grafico-container">
+
+                <h2>Ventas de la semana</h2>
+
+                <div class="grafico">
+
+                    <canvas id="graficoVentas"></canvas>
+
+                </div>
+
+            </section>
+
+            <div class="dashboard-inferior">
+
+                <section class="actividad-container">
+
+                    <h2>Actividad reciente</h2>
+
+                    <div id="listaActividad">
+                        <!-- JavaScript cargará las actividades -->
+                    </div>
+
+                </section>
+
+
+                <section class="stock-bajo-container">
+
+                    <h2>Productos con stock bajo</h2>
+
+                    <div id="listaStockBajo">
+                        <!-- JavaScript cargará los productos -->
+                    </div>
+
+                </section>
+
+            </div>
+
+            <section class="productos-seccion">
+
+                <div class="productos-header">
+
+                    <div>
+                        <h1>Productos</h1>
+                        <p>Administrá los productos de tu panadería.</p>
+                    </div>
+                    <button id="btnNuevoProducto" class="btn-nuevo-producto" data-bs-toggle="modal"
+                        data-bs-target="#modalProducto">
+                        + Nuevo producto
+                    </button>
+
+                </div>
+
+
+                <div class="productos-herramientas">
+
+                    <input type="text" id="buscarProducto" placeholder="🔍 Buscar producto...">
+
+                    <select id="filtroCategoria">
+
+                        <option value="todos">Todas las categorías</option>
+                        <option value="panaderia">Panadería</option>
+                        <option value="tortas">Tortas</option>
+                        <option value="facturas">Facturas</option>
+                        <option value="bebidas">Bebidas</option>
+
+                    </select>
+                    <select id="filtroEstado">
+                        <option value="activos">Productos activos</option>
+                        <option value="inactivos">Productos inactivos</option>
+                        <option value="todos">Todos los productos</option>
+                    </select>
+
+                </div>
+
+
+                <div class="tabla-productos">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Producto</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="tablaProductos">
+                            <!-- JavaScript cargará los productos -->
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            </section>
+
+            <!-- =========================
+                 MÓDULO DE VENTAS
+            ========================== -->
+
+            <section class="ventas-seccion" id="seccionVentas" hidden>
+
+                <div class="ventas-header">
+                    <div>
+                        <h1>Registrar venta</h1>
+                        <p>Seleccioná los productos y las cantidades.</p>
+                    </div>
+                </div>
+
+                <div class="ventas-contenido">
+
+                    <!-- Selección de productos -->
+                    <div class="ventas-productos">
+
+                        <h2>Productos disponibles</h2>
+
+                        <div class="ventas-herramientas">
+                            <input type="text" id="buscarProductoVenta" placeholder="Buscar producto...">
+                        </div>
+
+                        <div id="listaProductosVenta">
+                            <!-- JavaScript mostrará los productos -->
+                        </div>
+
+                    </div>
+
+                    <!-- Detalle de la venta -->
+                    <div class="venta-resumen">
+
+                        <h2>Detalle de la venta</h2>
+                        <div class="campo-cliente-venta">
+                            <label for="clienteVenta">Cliente</label>
+                            <select id="clienteVenta">
+                                <option value="">Venta sin cliente</option>
+                            </select>
+                        </div>
+
+                        <div id="detalleVenta">
+                            <p>Agregá productos para comenzar.</p>
+                        </div>
+
+                        <div class="venta-total">
+                            <span>Total</span>
+                            <strong id="totalVenta">$0</strong>
+                        </div>
+
+                        <button type="button" id="btnConfirmarVenta" disabled>
+                            Confirmar venta
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+     MÓDULO DE STOCK
+========================== -->
+
+            <section class="stock-seccion" id="seccionStock" hidden>
+
+                <div class="stock-header">
+                    <div>
+                        <h1>Control de stock</h1>
+                        <p>Consultá las existencias y controlá los productos de tu panadería.</p>
+                    </div>
+                </div>
+
+                <div class="stock-estadisticas">
+
+                    <div class="stock-card">
+                        <span>Productos disponibles</span>
+                        <h2 id="stockTotalProductos">0</h2>
+                    </div>
+
+                    <div class="stock-card">
+                        <span>Unidades en stock</span>
+                        <h2 id="stockTotalUnidades">0</h2>
+                    </div>
+
+                    <div class="stock-card">
+                        <span>Stock bajo</span>
+                        <h2 id="stockTotalBajo">0</h2>
+                    </div>
+
+                    <div class="stock-card">
+                        <span>Agotados</span>
+                        <h2 id="stockTotalAgotado">0</h2>
+                    </div>
+
+                </div>
+
+                <div class="stock-herramientas">
+                    <input type="text" id="buscarProductoStock" placeholder="Buscar producto...">
+
+                    <select id="filtroEstadoStock">
+                        <option value="todos">Todos los estados</option>
+                        <option value="disponible">Disponible</option>
+                        <option value="bajo">Stock bajo</option>
+                        <option value="agotado">Agotado</option>
+                    </select>
+                </div>
+
+                <div class="tabla-productos">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Categoría</th>
+                                <th>Stock actual</th>
+                                <th>Stock mínimo</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tablaStock">
+                            <!-- JavaScript cargará los productos -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+     MÓDULO DE REPORTES
+========================= -->
+
+            <section class="reportes-seccion" id="seccionReportes" hidden>
+
+
+                <div class="reportes-header">
+                    <div>
+                        <h1>Reportes de ventas</h1>
+                        <p>Consultá los ingresos y el rendimiento de tu panadería.</p>
+                    </div>
+
+                    <button type="button" id="btnExportarExcel" class="btn-exportar-excel">
+                        <i class="bi bi-file-earmark-excel"></i>
+                        Exportar a Excel
+                    </button>
+                </div>
+
+                <!-- FILTRO DE PERÍODO -->
+                <div class="reportes-herramientas">
+                    <label for="filtroPeriodoReporte">
+                        Período del reporte
+                    </label>
+
+                    <select id="filtroPeriodoReporte">
+                        <option value="hoy">Hoy</option>
+                        <option value="7dias" selected>Últimos 7 días</option>
+                        <option value="mes">Este mes</option>
+                        <option value="todos">Todas las ventas</option>
+                    </select>
+                </div>
+
+                <!-- TARJETAS DE ESTADÍSTICAS -->
+                <div class="reportes-estadisticas">
+
+                    <article class="reporte-card">
+                        <span>Ingresos totales</span>
+                        <h2 id="reporteIngresos">$0</h2>
+                    </article>
+
+                    <article class="reporte-card">
+                        <span>Ventas realizadas</span>
+                        <h2 id="reporteCantidadVentas">0</h2>
+                    </article>
+
+                    <article class="reporte-card">
+                        <span>Ticket promedio</span>
+                        <h2 id="reporteTicketPromedio">$0</h2>
+                    </article>
+
+                    <article class="reporte-card">
+                        <span>Unidades vendidas</span>
+                        <h2 id="reporteUnidadesVendidas">0</h2>
+                    </article>
+
+                </div>
+
+                <!-- HISTORIAL DE VENTAS -->
+                <div class="reportes-tabla-contenedor">
+
+                    <div class="reportes-tabla-header">
+                        <h2>Historial de ventas</h2>
+                        <p>Detalle de las operaciones registradas.</p>
+                    </div>
+
+                    <div class="reportes-tabla-scroll">
+                        <table class="reportes-tabla">
+
+                            <thead>
+                                <tr>
+                                    <th>N.º de venta</th>
+                                    <th>Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>Productos</th>
+                                    <th>Unidades</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tablaReportes">
+                                <tr>
+                                    <td colspan="6">
+                                        Los reportes se cargarán desde JavaScript.
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+     SECCIÓN CLIENTES
+========================= -->
+
+            <section class="clientes-seccion" id="seccionClientes" hidden>
+
+                <div class="clientes-header">
+                    <div>
+                        <h1>Gestión de clientes</h1>
+                        <p>Administrá la información de tus clientes.</p>
+                    </div>
+
+                    <button type="button" id="btnNuevoCliente">
+                        + Nuevo cliente
+                    </button>
+                </div>
+
+                <div class="clientes-estadisticas">
+
+                    <article class="cliente-card">
+                        <span>Clientes registrados</span>
+                        <h2 id="totalClientes">0</h2>
+                    </article>
+
+                    <article class="cliente-card">
+                        <span>Clientes activos</span>
+                        <h2 id="clientesActivos">0</h2>
+                    </article>
+
+                </div>
+
+
+
+
+                <!-- FORMULARIO NUEVO CLIENTE -->
+
+                <div class="formulario-cliente-contenedor" id="formularioClienteContenedor" hidden>
+
+                    <div class="formulario-cliente-header">
+                        <div>
+                            <h2 id="tituloFormularioCliente">Nuevo cliente</h2>
+                            <p>Completá los datos para registrar un cliente.</p>
+                        </div>
+                    </div>
+
+                    <form id="formCliente">
+
+                        <input type="hidden" id="idCliente">
+
+                        <div class="formulario-cliente-campos">
+
+                            <div class="campo-cliente">
+                                <label for="nombreCliente">Nombre completo</label>
+                                <input type="text" id="nombreCliente" placeholder="Ej: María López" required>
+                            </div>
+
+                            <div class="campo-cliente">
+                                <label for="telefonoCliente">Teléfono</label>
+                                <input type="tel" id="telefonoCliente" placeholder="Ej: 381 555-1234" required>
+                            </div>
+
+                            <div class="campo-cliente">
+                                <label for="correoCliente">Correo electrónico</label>
+                                <input type="email" id="correoCliente" placeholder="Ej: maria@gmail.com">
+                            </div>
+
+                        </div>
+
+                        <div class="formulario-cliente-acciones">
+
+                            <button type="button" id="btnCancelarCliente">
+                                Cancelar
+                            </button>
+
+                            <button type="submit" id="btnGuardarCliente">
+                                Guardar cliente
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <div class="clientes-tabla-contenedor">
+
+                    <div class="clientes-tabla-header">
+                        <h2>Listado de clientes</h2>
+                        <input type="text" id="buscarCliente" placeholder="Buscar cliente...">
+                    </div>
+
+                    <div class="clientes-tabla-scroll">
+
+                        <table class="clientes-tabla">
+
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Teléfono</th>
+                                    <th>Correo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tablaClientes">
+                                <tr>
+                                    <td colspan="4">
+                                        Todavía no hay clientes registrados.
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+        </main>
+
+
+        <!-- =========================
+             MODAL NUEVO PRODUCTO
+        ========================= -->
+
+        <div class="modal fade" id="modalProducto" tabindex="-1" aria-hidden="true">
+
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tituloModalProducto">
+                            Nuevo producto
+                        </h5>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <form id="formProducto">
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Nombre del producto
+                                </label>
+
+                                <input type="text" id="nombreProducto" class="form-control" placeholder="Ej: Alfajor"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Categoría
+                                </label>
+
+                                <select id="categoriaProducto" class="form-select" required>
+
+                                    <option value="">
+                                        Seleccionar categoría
+                                    </option>
+
+                                    <option value="panaderia">
+                                        Panadería
+                                    </option>
+
+                                    <option value="tortas">
+                                        Tortas
+                                    </option>
+
+                                    <option value="facturas">
+                                        Facturas
+                                    </option>
+
+                                    <option value="bebidas">
+                                        Bebidas
+                                    </option>
+
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Precio
+                                </label>
+
+                                <input type="number" id="precioProducto" class="form-control" placeholder="Ej: 2500"
+                                    min="0" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Stock
+                                </label>
+
+                                <input type="number" id="stockProducto" class="form-control" placeholder="Ej: 20"
+                                    min="0" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Stock mínimo
+                                </label>
+
+                                <input type="number" id="stockMinimoProducto" class="form-control" placeholder="Ej: 10"
+                                    min="0" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">
+                                Guardar producto
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+     MODAL PARA REPONER STOCK
+========================= -->
+
+    <div class="modal fade" id="modalReposicion" tabindex="-1" aria-labelledby="tituloModalReposicion"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-reposicion">
+
+                <div class="modal-header">
+                    <div>
+                        <span class="reposicion-etiqueta">INVENTARIO</span>
+                        <h5 class="modal-title" id="tituloModalReposicion">
+                            Reponer stock
+                        </h5>
+                        <p class="reposicion-descripcion">
+                            Registrá las unidades que ingresaron.
+                        </p>
+                    </div>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <form id="formReposicion">
+
+                    <div class="modal-body">
+
+                        <div class="reposicion-producto">
+                            <div class="reposicion-icono">🥐</div>
+
+                            <div>
+                                <span class="reposicion-label">Producto</span>
+                                <strong id="nombreProductoReposicion">
+                                    Producto seleccionado
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="reposicion-stock-actual">
+                            <span>Stock actual</span>
+                            <strong>
+                                <span id="stockActualReposicion">0</span>
+                                unidades
+                            </strong>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cantidadReposicion" class="form-label">
+                                Cantidad de unidades que ingresaron
+                            </label>
+
+                            <input type="number" id="cantidadReposicion" class="form-control input-reposicion" min="1"
+                                step="1" placeholder="Ej.: 12" required>
+
+                            <small class="reposicion-ayuda">
+                                Ingresá un número entero mayor que cero.
+                            </small>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-cancelar-reposicion" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+
+                        <button type="submit" class="btn-confirmar-reposicion">
+                            ✓ Confirmar reposición
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Alertas y notificaciones -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+    <!-- Archivos de nuestro sistema -->
+    <script src="js/app.js"></script>
+    <script src="js/producto.js"></script>
+    <script src="js/ventas.js"></script>
+    <script src="js/stock.js"></script>
+    <script src="js/reportes.js"></script>
+    <script src="js/clientes.js"></script>
+</body>
+
+</html>
